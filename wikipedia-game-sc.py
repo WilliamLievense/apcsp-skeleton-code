@@ -2,7 +2,7 @@ from queue import Queue
 import wikipediaapi
 import time
 
-user_agent = "William'sWikipediaGame/1.0 (li5584wi0112@pusd.us)"
+user_agent = "Will Lievense'sWikipediaGame/1.0 (Ed1649Ol1221@pusd.us)"
 
 wiki_wiki = wikipediaapi.Wikipedia(user_agent, "en")
 
@@ -20,37 +20,37 @@ def wikipedia_game_solver(start_page, target_page):
     print('Working on it...')
     start_time = time.time()
   
-  visited = []
-  queue = Queue[]
-  path = []
+    visited = []
+    queue = Queue()
+    path = []
+    parent = {}
 
-  queue.put(start_page.title)
-  visited.append(start_page.title)
 
-  while not queue.empty():
+    queue.put(start_page.title)
+    visited.append(start_page.title)
 
-    current_title = queue.get()
+    while not queue.empty():
 
-    if current_title == target_page.title:
-        break
+        current_title = queue.get()
 
-    #visit my current title
-    visited.append(current_title)
-    current_page = wiki_wiki.page(current_title)
-    next_level = fetch_links(current_page)
+        if current_title == target_page.title:
+            break
 
-    for node in next_level:
-        if node not in visited:
-            queue.put(node)
-            parent[node] = current_title
+        visited.append(current_title)
+        current_page = wiki_wiki.page(current_title)
+        next_level = fetch_links(current_page)
 
-child = target_page.title
-while child !=start_page.title:
-    path.append(child)
-    child = parent[child]
-path.append(start_page.title)
-path.reverse()
+        for node in next_level:
+            if node not in visited:
+                queue.put(node)
+                parent[node] = current_title
 
+    child = target_page.title
+    while child != start_page.title:
+        path.append(child)
+        child = parent[child]
+    path.append(start_page.title)
+    path.reverse()
 
     end_time = time.time()
     print("This algorithm took", end_time-start_time, "seconds to run!")
@@ -62,4 +62,3 @@ start_page = wiki_wiki.page('Nina Tandon')
 target_page = wiki_wiki.page('Italian language')
 path = wikipedia_game_solver(start_page, target_page)
 print("Shortest path:", path)
-
